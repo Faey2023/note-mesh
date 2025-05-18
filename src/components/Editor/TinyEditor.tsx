@@ -47,7 +47,6 @@ const TinyEditor = ({ docId }: { docId: string }) => {
     }
   };
 
-
   const handleEditorChange = (newContent: string) => {
     setContent(newContent);
 
@@ -56,8 +55,6 @@ const TinyEditor = ({ docId }: { docId: string }) => {
       autoSaveContent(newContent);
     }, 1000);
   };
-
-
 
   return (
     <Editor

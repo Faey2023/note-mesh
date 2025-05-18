@@ -3,6 +3,7 @@
 const TinyEditor = dynamic(() => import("@/components/Editor/TinyEditor"), {
   ssr: false,
 });
+import DocNav from "@/components/shared/DocNav";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 
@@ -12,9 +13,13 @@ const DocumentEditor = () => {
   console.log(id);
 
   return (
-    <div className="p-6">
-      <TinyEditor docId={id} />
-    </div>
+    <>
+      <DocNav docId={id} />
+
+      <div className="p-6">
+        <TinyEditor docId={id} />
+      </div>
+    </>
   );
 };
 export default DocumentEditor;

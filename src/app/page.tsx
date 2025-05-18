@@ -8,8 +8,11 @@ import CreateDocument from "@/components/document/CreateDocument";
 import DocumentList from "@/components/document/DocumentList";
 import ShareDocument from "@/components/document/ShareDocument";
 import Swal from "sweetalert2";
+import Navbar from "@/components/shared/Navbar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Home = () => {
+  const [loading] = useState(false);
   const [currentUser, setCurrentUser] = useState<User>();
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [ownedDocs, setOwnedDocs] = useState<Document[]>([]);
@@ -179,7 +182,7 @@ const Home = () => {
   const getUserName = (userId: string) =>
     allUsers.find((u) => u._id === userId)?.fullName || "Unknown";
 
-  if (!currentUser) return <p>Loading user...</p>;
+  if (!currentUser) return <Skeleton/>;
 
   // Filter docs for owned and shared separately:
   const ownedDocuments = ownedDocs.filter(
@@ -194,45 +197,53 @@ const Home = () => {
 
   console.log(sharedDocuments);
 
-  return (
-    <main className="p-6 md:p-10 max-w-6xl mx-auto space-y-10">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Welcome, {currentUser.fullName}</h2>
-        <CreateDocument />
-      </div>
+  return loading ? (
+    <Skeleton />
+  ) : (
+    <>
+      <Navbar />
 
-      <div className="space-y-6">
-        <section>
-          <h3 className="text-xl font-semibold mb-2">Your Documents</h3>
-          <DocumentList
-            documents={ownedDocuments}
-            onDelete={handleDeleteDocument}
-            onShare={handleShareDocument}
-            onOpen={handleOpenDocument}
-            isOwnerView={true}
-          />
-        </section>
+      <main className="p-6 md:p-10 max-w-6xl mx-auto space-y-10">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold">
+            Welcome, {currentUser.fullName}
+          </h2>
+          <CreateDocument />
+        </div>
 
-        <section>
-          <h3 className="text-xl font-semibold mb-2">Shared With You</h3>
-          <DocumentList
-            documents={sharedDocuments}
-            onDelete={() => {}}
-            onShare={() => {}}
-            onOpen={handleOpenDocument}
-            isOwnerView={false}
-            getUserName={getUserName}
-          />
-        </section>
-      </div>
+        <div className="space-y-6">
+          <section>
+            <h3 className="text-xl font-semibold mb-2">Your Documents</h3>
+            <DocumentList
+              documents={ownedDocuments}
+              onDelete={handleDeleteDocument}
+              onShare={handleShareDocument}
+              onOpen={handleOpenDocument}
+              isOwnerView={true}
+            />
+          </section>
 
-      <ShareDocument
-        isOpen={shareDialogOpen}
-        onOpenChange={setShareDialogOpen}
-        onShare={handleConfirmShare}
-        allUsers={allUsers}
-      />
-    </main>
+          <section>
+            <h3 className="text-xl font-semibold mb-2">Shared With You</h3>
+            <DocumentList
+              documents={sharedDocuments}
+              onDelete={() => {}}
+              onShare={() => {}}
+              onOpen={handleOpenDocument}
+              isOwnerView={false}
+              getUserName={getUserName}
+            />
+          </section>
+        </div>
+
+        <ShareDocument
+          isOpen={shareDialogOpen}
+          onOpenChange={setShareDialogOpen}
+          onShare={handleConfirmShare}
+          allUsers={allUsers}
+        />
+      </main>
+    </>
   );
 };
 
