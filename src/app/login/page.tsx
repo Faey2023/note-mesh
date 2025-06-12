@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Button } from "@/components/ui/button";
 
 interface LoginFormInputs {
   email: string;
@@ -101,9 +102,7 @@ const Login = () => {
               </span>
             )}
 
-            <button className="p-3.5 cursor-pointer rounded-md block bg-[#002172] hover:bg-[#142a9b] w-fit lg:w-[558px] text-white mt-4">
-              Login
-            </button>
+            <Button variant={"auth"} >Login</Button>
 
             <div className="mt-4">
               Don’t have an account?{" "}

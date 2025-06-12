@@ -8,6 +8,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { RegisterFormInputs } from "@/types";
+import { Button } from "@/components/ui/button";
 
 const Register = () => {
   const router = useRouter();
@@ -149,9 +150,7 @@ const Register = () => {
             </span>
           )}
 
-          <button className="p-3.5 cursor-pointer rounded-md block bg-[#002172] hover:bg-[#142a9b] w-fit lg:w-[558px] text-white mt-4">
-            Register
-          </button>
+           <Button variant={"auth"} >Register</Button>
 
           <div className="mt-3">
             Already have an account?
