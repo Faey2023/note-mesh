@@ -1,36 +1,61 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FileText } from "lucide-react";
+"use client";
 
-const currentUser = {
-  id: "user-1",
-  name: "John Doe",
-  email: "john@example.com",
-  avatar: "/placeholder.svg?height=32&width=32",
-};
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User } from "@/types";
+import axios from "axios";
+import { FileText } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
+  const [currentUser, setCurrentUser] = useState<User>();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/currentUser`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setCurrentUser(res.data);
+      } catch (err) {
+        console.error("Error fetching user:", err);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  if (!currentUser) return null;
+
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center gap-3">
-          <FileText className="h-8 w-8 text-blue-600" />
+          <FileText className="h-8 w-8 text-[#002172]" />
           <h1 className="text-2xl font-bold text-gray-900">Note Mesh</h1>
         </div>
         <div className="flex items-center gap-3">
           <Avatar>
             <AvatarImage
               src={currentUser.avatar || "/placeholder.svg"}
-              alt={currentUser.name}
+              alt={currentUser.fullName}
             />
             <AvatarFallback>
-              {currentUser.name
+              {currentUser.fullName
                 .split(" ")
                 .map((n) => n[0])
                 .join("")}
             </AvatarFallback>
           </Avatar>
           <span className="text-sm font-medium text-gray-700">
-            {currentUser.name}
+            {currentUser.fullName}
           </span>
         </div>
       </div>

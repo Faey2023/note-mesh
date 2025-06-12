@@ -68,7 +68,7 @@ const Register = () => {
   return (
     <div className="max-w-screen-lg mx-auto my-10">
       <h3 className="text-3xl font-semibold text-center mb-5">Register</h3>
-      <div className="flex flex-col items-center md:flex-row-reverse gap-5">
+      <div className="flex  items-center ">
         <form
           className="max-w-screen-md mx-auto"
           onSubmit={handleSubmit(onSubmit)}
@@ -150,7 +150,7 @@ const Register = () => {
             </span>
           )}
 
-           <Button variant={"auth"} >Register</Button>
+          <Button variant={"auth"}>Register</Button>
 
           <div className="mt-3">
             Already have an account?

@@ -1,11 +1,11 @@
 export interface Document {
-  id: string
-  title: string
-  content: string
-  owner: string
-  sharedWith: string[]
-  createdAt: string
-  updatedAt: string
+  id: string;
+  title: string;
+  content: string;
+  owner: string;
+  sharedWith: string[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface RegisterFormInputs {
@@ -13,4 +13,10 @@ export interface RegisterFormInputs {
   email: string;
   password: string;
   image: FileList;
+}
+
+export interface User {
+  fullName: string;
+  email: string;
+  avatar: string;
 }

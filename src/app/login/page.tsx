@@ -57,64 +57,62 @@ const Login = () => {
   return (
     <div className="max-w-screen-lg mx-auto my-10">
       <h3 className="text-3xl font-semibold text-center mb-5">Login</h3>
-      <div className="flex flex-col items-center md:flex-row-reverse gap-5">
-        <div className="flex-1">
-          <form
-            className="max-w-screen-md mx-auto"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <h3 className="mt-8 mb-2 text-xl font-semibold">Email Address</h3>
+      <div className="flex  items-center ">
+        <form
+          className="max-w-screen-md mx-auto"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <h3 className="mt-8 mb-2 text-xl font-semibold">Email Address</h3>
+          <input
+            {...register("email", { required: true })}
+            type="text"
+            placeholder="Enter your email"
+            className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5"
+          />
+          {errors.email && (
+            <span className="text-xs text-red-600">
+              Email is required to login.
+            </span>
+          )}
+
+          <h3 className="text-xl font-semibold my-3">Password</h3>
+          <div className="relative h-fit w-fit ">
             <input
-              {...register("email", { required: true })}
-              type="text"
-              placeholder="Enter your email"
-              className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5"
+              {...register("password", {
+                required: true,
+                minLength: 6,
+                pattern: /^(?=.*[A-Z]).{6,}$/i,
+              })}
+              type={passwordVisible ? "text" : "password"}
+              name="password"
+              placeholder="Enter your password"
+              className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5 mb-7"
             />
-            {errors.email && (
-              <span className="text-xs text-red-600">
-                Email is required to login.
-              </span>
-            )}
+            <span
+              className="cursor-pointer text-xl absolute top-4 right-3"
+              onClick={handleTogglePassword}
+            >
+              {passwordVisible ? <EyeIcon /> : <EyeClosedIcon />}
+            </span>
+          </div>
+          {errors.password && (
+            <span className="text-xs text-red-600">
+              Password is required to login.
+            </span>
+          )}
 
-            <h3 className="text-xl font-semibold my-3">Password</h3>
-            <div className="relative h-fit w-fit ">
-              <input
-                {...register("password", {
-                  required: true,
-                  minLength: 6,
-                  pattern: /^(?=.*[A-Z]).{6,}$/i,
-                })}
-                type={passwordVisible ? "text" : "password"}
-                name="password"
-                placeholder="Enter your password"
-                className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5 mb-7"
-              />
-              <span
-                className="cursor-pointer text-xl absolute top-4 right-3"
-                onClick={handleTogglePassword}
-              >
-                {passwordVisible ? <EyeIcon /> : <EyeClosedIcon />}
-              </span>
-            </div>
-            {errors.password && (
-              <span className="text-xs text-red-600">
-                Password is required to login.
-              </span>
-            )}
+          <Button variant={"auth"}>Login</Button>
 
-            <Button variant={"auth"} >Login</Button>
-
-            <div className="mt-4">
-              Don’t have an account?{" "}
-              <Link
-                href="/register"
-                className="hover:underline text-[#002172] hover:text-blue-700 font-bold"
-              >
-                Register
-              </Link>
-            </div>
-          </form>
-        </div>
+          <div className="mt-4">
+            Don’t have an account?{" "}
+            <Link
+              href="/register"
+              className="hover:underline text-[#002172] hover:text-blue-700 font-bold"
+            >
+              Register
+            </Link>
+          </div>
+        </form>
       </div>
     </div>
   );
