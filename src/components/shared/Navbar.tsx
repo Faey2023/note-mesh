@@ -38,7 +38,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setCurrentUser(undefined);
-    router.push("/login"); // redirect to login page (adjust as needed)
+    router.push("/login");
   };
 
   if (!currentUser) return null;

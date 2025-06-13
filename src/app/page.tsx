@@ -9,7 +9,7 @@ import DocumentList from "@/components/document/DocumentList";
 import ShareDocument from "@/components/document/ShareDocument";
 import Swal from "sweetalert2";
 
-export default function Home() {
+const Home = () => {
   const [currentUser, setCurrentUser] = useState<User>();
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [ownedDocs, setOwnedDocs] = useState<Document[]>([]);
@@ -60,7 +60,9 @@ export default function Home() {
 
   // fetch current user's documents (owned + shared)
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      router.push("/login");
+    }
 
     const fetchUserAndDocs = async () => {
       try {
@@ -85,14 +87,20 @@ export default function Home() {
     };
 
     fetchUserAndDocs();
-  }, [token]);
-
-  // const handleDeleteDocument = (docId: string) => {
-  //   setOwnedDocs((prev) => prev.filter((doc) => doc._id !== docId));
-  // };
+  }, [token, router]);
 
   const handleDeleteDocument = async (docId: string) => {
-    
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This action will delete the document permanently.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       await axios.delete(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/doc/${docId}`,
@@ -100,9 +108,13 @@ export default function Home() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+
       setOwnedDocs((prev) => prev.filter((doc) => doc._id !== docId));
+
+      await Swal.fire("Deleted!", "Your document has been deleted.", "success");
     } catch (error) {
       console.error("Failed to delete document:", error);
+      await Swal.fire("Error", "Failed to delete document.", "error");
     }
   };
 
@@ -207,4 +219,6 @@ export default function Home() {
       />
     </main>
   );
-}
+};
+
+export default Home;
