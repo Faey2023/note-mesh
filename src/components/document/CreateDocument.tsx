@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 const CreateDocument = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,7 +55,10 @@ const CreateDocument = () => {
       router.push(`/documents/${data.id}`);
     } catch (err) {
       console.error("Error:", err);
-      alert("Failed to create document. Try again.");
+      Swal.fire({
+        title: "Failed to create document. Try again.",
+        icon: "error",
+      });
     } finally {
       setLoading(false);
     }

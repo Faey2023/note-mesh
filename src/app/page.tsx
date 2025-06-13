@@ -7,6 +7,7 @@ import { User, Document } from "@/types";
 import CreateDocument from "@/components/document/CreateDocument";
 import DocumentList from "@/components/document/DocumentList";
 import ShareDocument from "@/components/document/ShareDocument";
+import Swal from "sweetalert2";
 
 export default function Home() {
   const [currentUser, setCurrentUser] = useState<User>();
@@ -86,8 +87,23 @@ export default function Home() {
     fetchUserAndDocs();
   }, [token]);
 
-  const handleDeleteDocument = (docId: string) => {
-    setOwnedDocs((prev) => prev.filter((doc) => doc._id !== docId));
+  // const handleDeleteDocument = (docId: string) => {
+  //   setOwnedDocs((prev) => prev.filter((doc) => doc._id !== docId));
+  // };
+
+  const handleDeleteDocument = async (docId: string) => {
+    
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/doc/${docId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setOwnedDocs((prev) => prev.filter((doc) => doc._id !== docId));
+    } catch (error) {
+      console.error("Failed to delete document:", error);
+    }
   };
 
   const handleOpenDocument = (docId: string) => {
@@ -102,7 +118,10 @@ export default function Home() {
   const handleConfirmShare = async (email: string) => {
     const user = allUsers.find((u) => u.email === email);
     if (!user) {
-      alert("User not found.");
+      Swal.fire({
+        title: "User not found.",
+        icon: "error",
+      });
       return;
     }
 
@@ -142,7 +161,6 @@ export default function Home() {
   const ownedDocuments = ownedDocs.filter(
     (doc) => doc.owner === currentUser._id
   );
-  console.log(ownedDocuments, "check");
 
   const sharedDocuments = ownedDocs.filter(
     (doc) =>
