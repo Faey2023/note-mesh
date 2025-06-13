@@ -1,5 +1,5 @@
 export interface Document {
-  id: string;
+  _id: string;
   title: string;
   content: string;
   owner: string;
@@ -16,7 +16,8 @@ export interface RegisterFormInputs {
 }
 
 export interface User {
+  _id: string;
   fullName: string;
   email: string;
-  avatar: string;
+  avatar?: string;
 }
