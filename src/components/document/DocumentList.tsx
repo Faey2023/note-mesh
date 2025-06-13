@@ -20,6 +20,12 @@ const DocumentList = ({
   isOwnerView = false,
   getUserName,
 }: DocumentListProps) => {
+  const stripHtml = (html: string) => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
+  };
+
   return (
     <>
       {documents.length === 0 && (
@@ -62,7 +68,7 @@ const DocumentList = ({
                 )}
               </div>
               <CardDescription className="line-clamp-2">
-                {doc.content || "Empty document"}
+                {doc.content ? stripHtml(doc.content) : "Empty document"}
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-0">

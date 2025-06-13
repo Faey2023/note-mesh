@@ -52,7 +52,7 @@ const CreateDocument = () => {
       const data = await res.json();
       setTitle("");
       setIsOpen(false);
-      router.push(`/doc/${data.id}`);
+      router.push(`/doc/${data._id}`);
     } catch (err) {
       console.error("Error:", err);
       Swal.fire({
@@ -92,7 +92,11 @@ const CreateDocument = () => {
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={handleCreate} disabled={!title.trim()}>
+          <Button
+            className="cursor-pointer"
+            onClick={handleCreate}
+            disabled={!title.trim()}
+          >
             Create Document
           </Button>
         </DialogFooter>
