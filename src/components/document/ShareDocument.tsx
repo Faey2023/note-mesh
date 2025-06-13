@@ -12,27 +12,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-}
-
-interface ShareDocumentDialogProps {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  onShare: (email: string) => void;
-  dummyUsers: User[];
-}
+import { ShareDocumentProps } from "@/types";
 
 const ShareDocument = ({
   isOpen,
   onOpenChange,
   onShare,
-  dummyUsers,
-}: ShareDocumentDialogProps) => {
+  allUsers,
+}: ShareDocumentProps) => {
   const [email, setEmail] = useState("");
 
   const handleShare = () => {
@@ -65,7 +52,7 @@ const ShareDocument = ({
             />
           </div>
           <div className="text-sm text-gray-600">
-            Available users: {dummyUsers.map((u) => u.email).join(", ")}
+            Available users: {allUsers.map((u) => u.email).join(", ")}
           </div>
         </div>
         <DialogFooter>

@@ -185,7 +185,7 @@ export default function Home() {
         isOpen={shareDialogOpen}
         onOpenChange={setShareDialogOpen}
         onShare={handleConfirmShare}
-        dummyUsers={allUsers} 
+        allUsers={allUsers}
       />
     </main>
   );

@@ -26,6 +26,8 @@ const CreateDocument = () => {
     const trimmed = title.trim();
     if (!trimmed) return;
 
+    console.log(loading);
+
     const token = localStorage.getItem("token");
     if (!token) return;
 

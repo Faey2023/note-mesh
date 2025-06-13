@@ -19,5 +19,12 @@ export interface User {
   _id: string;
   fullName: string;
   email: string;
-  avatar?: string;
+  avatar: string;
+}
+
+export interface ShareDocumentProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  onShare: (email: string) => void;
+  allUsers: User[];
 }
