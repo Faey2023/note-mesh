@@ -22,7 +22,9 @@ const Home = () => {
 
   // fetch current user
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      router.push("/login");
+    }
     const fetchUser = async () => {
       try {
         const res = await axios.get(
@@ -37,11 +39,14 @@ const Home = () => {
       }
     };
     fetchUser();
-  }, [token]);
+  }, [token, router]);
 
   // fetch all users (for sharing)
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      router.push("/login");
+    }
+
     const fetchUsers = async () => {
       try {
         const res = await axios.get(
