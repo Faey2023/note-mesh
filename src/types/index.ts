@@ -1,9 +1,14 @@
+export interface SharedWithEntry {
+  user: string;
+  role: "viewer" | "editor";
+  _id?: string;
+}
 export interface Document {
   _id: string;
   title: string;
   content: string;
   owner: string;
-  sharedWith: string[];
+  sharedWith: SharedWithEntry[];
   createdAt: string;
   updatedAt: string;
 }
@@ -27,4 +32,18 @@ export interface ShareDocumentProps {
   onOpenChange: (open: boolean) => void;
   onShare: (email: string) => void;
   allUsers: User[];
+}
+
+export interface LoginFormInputs {
+  email: string;
+  password: string;
+}
+
+export interface DocumentListProps {
+  documents: Document[];
+  onDelete: (docId: string) => void;
+  onShare: (docId: string) => void;
+  onOpen: (docId: string) => void;
+  isOwnerView?: boolean;
+  getUserName?: (userId: string) => string;
 }

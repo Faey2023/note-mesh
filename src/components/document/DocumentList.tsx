@@ -9,17 +9,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Document } from "@/types";
+import { Document, DocumentListProps } from "@/types";
 import { Share, Trash2, Users } from "lucide-react";
-
-interface DocumentListProps {
-  documents: Document[];
-  onDelete: (docId: string) => void;
-  onShare: (docId: string) => void;
-  onOpen: (docId: string) => void;
-  isOwnerView?: boolean;
-  getUserName?: (userId: string) => string;
-}
 
 const DocumentList = ({
   documents,

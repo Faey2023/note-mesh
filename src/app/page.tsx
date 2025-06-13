@@ -61,7 +61,7 @@ const Home = () => {
       }
     };
     fetchUsers();
-  }, [token]);
+  }, [token, router]);
 
   // fetch current user's documents (owned + shared)
   useEffect(() => {
@@ -156,8 +156,15 @@ const Home = () => {
 
       setOwnedDocs((prev) =>
         prev.map((doc) =>
-          doc._id === selectedDocId && !doc.sharedWith.includes(user._id)
-            ? { ...doc, sharedWith: [...doc.sharedWith, user._id] }
+          doc._id === selectedDocId &&
+          !doc.sharedWith.some((entry) => entry.user === user._id)
+            ? {
+                ...doc,
+                sharedWith: [
+                  ...doc.sharedWith,
+                  { user: user._id, role: "viewer" },
+                ],
+              }
             : doc
         )
       );
@@ -181,8 +188,11 @@ const Home = () => {
 
   const sharedDocuments = ownedDocs.filter(
     (doc) =>
-      doc.owner !== currentUser._id && doc.sharedWith.includes(currentUser._id)
+      doc.owner !== currentUser._id &&
+      doc.sharedWith.some((entry) => entry.user === currentUser._id)
   );
+
+  console.log(sharedDocuments);
 
   return (
     <main className="p-6 md:p-10 max-w-6xl mx-auto space-y-10">

@@ -52,7 +52,7 @@ const CreateDocument = () => {
       const data = await res.json();
       setTitle("");
       setIsOpen(false);
-      router.push(`/documents/${data.id}`);
+      router.push(`/doc/${data.id}`);
     } catch (err) {
       console.error("Error:", err);
       Swal.fire({
@@ -67,7 +67,7 @@ const CreateDocument = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-2">
+        <Button className="flex items-center gap-2 cursor-pointer">
           <Plus className="h-4 w-4" />
           New Document
         </Button>
