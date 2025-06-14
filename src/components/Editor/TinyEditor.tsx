@@ -5,11 +5,11 @@ import { Editor as TinyMCEEditor } from "tinymce";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { io, Socket } from "socket.io-client";
-import { User } from "@/types";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 const TinyEditor = ({ docId }: { docId: string }) => {
   const [content, setContent] = useState<string>("");
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const { currentUser } = useCurrentUser();
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const socketRef = useRef<Socket | null>(null);
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -17,17 +17,6 @@ const TinyEditor = ({ docId }: { docId: string }) => {
 
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
-  // Fetch current user
-  useEffect(() => {
-    if (!token) return;
-    axios
-      .get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/currentUser`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => setCurrentUser(res.data))
-      .catch((err) => console.error("Error fetching user:", err));
-  }, [token]);
 
   // Fetch document content
   useEffect(() => {

@@ -10,10 +10,10 @@ import ShareDocument from "@/components/document/ShareDocument";
 import Swal from "sweetalert2";
 import Navbar from "@/components/shared/Navbar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 const Home = () => {
-  const [loading] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User>();
+  const { currentUser, setCurrentUser, loading } = useCurrentUser();
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [ownedDocs, setOwnedDocs] = useState<Document[]>([]);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
@@ -22,27 +22,6 @@ const Home = () => {
 
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
-  // fetch current user
-  useEffect(() => {
-    if (!token) {
-      router.push("/login");
-    }
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/currentUser`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setCurrentUser(res.data);
-      } catch (err) {
-        console.error("Error fetching user:", err);
-      }
-    };
-    fetchUser();
-  }, [token, router]);
 
   // fetch all users (for sharing)
   useEffect(() => {
@@ -95,7 +74,7 @@ const Home = () => {
     };
 
     fetchUserAndDocs();
-  }, [token, router]);
+  }, [token, router, setCurrentUser]);
 
   const handleDeleteDocument = async (docId: string) => {
     const result = await Swal.fire({
@@ -182,7 +161,7 @@ const Home = () => {
   const getUserName = (userId: string) =>
     allUsers.find((u) => u._id === userId)?.fullName || "Unknown";
 
-  if (!currentUser) return <Skeleton/>;
+  if (!currentUser) return <Skeleton />;
 
   // Filter docs for owned and shared separately:
   const ownedDocuments = ownedDocs.filter(

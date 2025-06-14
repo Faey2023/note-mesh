@@ -4,43 +4,19 @@ import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
-import axios from "axios";
 import { User } from "@/types";
 
 const TinyEditor = dynamic(() => import("@/components/Editor/TinyEditor"), {
   ssr: false,
 });
 import DocNav from "@/components/shared/DocNav";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 const DocumentEditor = () => {
   const { id } = useParams<{ id: string }>();
   const [activeUsers, setActiveUsers] = useState<User[]>([]);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const { currentUser } = useCurrentUser();
   const socketRef = useRef<Socket | null>(null);
-
-  // current user
-  useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/currentUser`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setCurrentUser(res.data);
-      } catch (err) {
-        console.error("Error fetching user:", err);
-      }
-    };
-
-    fetchUser();
-  }, []);
 
   // socket connection
   useEffect(() => {
