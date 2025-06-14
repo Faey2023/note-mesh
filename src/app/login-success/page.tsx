@@ -9,13 +9,13 @@ export default function LoginSuccess() {
 
   useEffect(() => {
     const token = new URLSearchParams(window.location.search).get("token");
+
     if (token) {
       localStorage.setItem("token", token);
 
       Swal.fire({
         icon: "success",
         title: "Login Successful",
-        text: "Welcome back!",
         timer: 1500,
         showConfirmButton: false,
       }).then(() => {
@@ -25,7 +25,6 @@ export default function LoginSuccess() {
       Swal.fire({
         icon: "error",
         title: "Login Failed",
-        text: "No token found. Please try again.",
       }).then(() => {
         router.push("/login");
       });

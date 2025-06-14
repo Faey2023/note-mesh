@@ -1,38 +1,20 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { SharedWithEntry, User } from "@/types";
+import { User } from "@/types";
 import axios from "axios";
 import { FileText } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const DocNav = ({ docId }: { docId: string }) => {
-  const [currentUser, setCurrentUser] = useState<User>();
+const DocNav = ({
+  docId,
+  activeUsers,
+}: {
+  docId: string;
+  activeUsers: User[];
+}) => {
   const [sharedUsers, setSharedUsers] = useState<User[]>([]);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/currentUser`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setCurrentUser(res.data);
-      } catch (err) {
-        console.error("Error fetching user:", err);
-      }
-    };
-
-    fetchUser();
-  }, []);
 
   useEffect(() => {
     const fetchDocument = async () => {
@@ -47,7 +29,7 @@ const DocNav = ({ docId }: { docId: string }) => {
           }
         );
         setSharedUsers(
-          res.data.sharedWith.map((data: SharedWithEntry) => data.user)
+          res.data.sharedWith.map((entry: { user: User }) => entry.user)
         );
       } catch (err) {
         console.error("Failed to load document:", err);
@@ -56,8 +38,9 @@ const DocNav = ({ docId }: { docId: string }) => {
 
     fetchDocument();
   }, [docId]);
-  console.log(sharedUsers);
-  if (!currentUser) return null;
+
+  const isActive = (userId: string) =>
+    activeUsers.some((user) => user._id === userId);
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
@@ -67,24 +50,29 @@ const DocNav = ({ docId }: { docId: string }) => {
           <h1 className="text-2xl font-bold text-gray-900">Note Mesh</h1>
         </Link>
 
-        <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale">
-          {sharedUsers.map((user, idx) => (
-            <Avatar key={idx}>
-              <AvatarImage
-                src={user.avatar || ""}
-                alt={`@${user.fullName || "user"}`}
-              />
-              <AvatarFallback>
-                {user.fullName
-                  ? user.fullName
-                      .split(" ")
-                      .map((word) => word[0])
-                      .join("")
-                      .toUpperCase()
-                  : "US"}
-              </AvatarFallback>
-            </Avatar>
-          ))}
+        <div className="flex -space-x-2">
+          {sharedUsers.map((user) => {
+            const active = isActive(user._id);
+            return (
+              <Avatar
+                key={user._id}
+                className={`ring-2 ${
+                  active ? "ring-blue-500" : "grayscale ring-gray-300"
+                }`}
+              >
+                <AvatarImage src={user.avatar || ""} alt={user.fullName} />
+                <AvatarFallback>
+                  {user.fullName
+                    ? user.fullName
+                        .split(" ")
+                        .map((w) => w[0])
+                        .join("")
+                        .toUpperCase()
+                    : "US"}
+                </AvatarFallback>
+              </Avatar>
+            );
+          })}
         </div>
       </div>
     </header>
