@@ -18,7 +18,6 @@ const ShareDocument = ({
   isOpen,
   onOpenChange,
   onShare,
-  allUsers,
 }: ShareDocumentProps) => {
   const [email, setEmail] = useState("");
 
@@ -50,9 +49,6 @@ const ShareDocument = ({
               placeholder="Enter email address..."
               onKeyDown={(e) => e.key === "Enter" && handleShare()}
             />
-          </div>
-          <div className="text-sm text-gray-600">
-            Available users: {allUsers.map((u) => u.email).join(", ")}
           </div>
         </div>
         <DialogFooter>

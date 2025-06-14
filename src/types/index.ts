@@ -31,7 +31,6 @@ export interface ShareDocumentProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   onShare: (email: string) => void;
-  allUsers: User[];
 }
 
 export interface LoginFormInputs {

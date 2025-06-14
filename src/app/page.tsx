@@ -219,7 +219,6 @@ const Home = () => {
           isOpen={shareDialogOpen}
           onOpenChange={setShareDialogOpen}
           onShare={handleConfirmShare}
-          allUsers={allUsers}
         />
       </main>
     </>
