@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { RegisterFormInputs } from "@/types";
 import { Button } from "@/components/ui/button";
+import GoogleLogin from "@/components/shared/GoogleLogin";
 
 const Register = () => {
   const router = useRouter();
@@ -73,49 +74,54 @@ const Register = () => {
           className="max-w-screen-md mx-auto"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <h3 className="mt-8 mb-2 text-xl font-semibold">Name</h3>
-          <input
-            {...register("name", { required: true })}
-            type="text"
-            name="name"
-            placeholder="Enter your Name"
-            className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5"
-          />
-          {errors.name && (
-            <span className="text-xs text-red-600">
-              Name is required to register.
-            </span>
-          )}
+          <div className="flex flex-col">
+            <h3 className="mt-8 mb-2 text-xl font-semibold">Name</h3>
+            <input
+              {...register("name", { required: true })}
+              type="text"
+              name="name"
+              placeholder="Enter your Name"
+              className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5"
+            />
+            {errors.name && (
+              <span className="text-xs text-red-600">
+                Name is required to register.
+              </span>
+            )}
+          </div>
 
-          <h3 className="mt-8 mb-2 text-xl font-semibold">Image</h3>
-          <input
-            {...register("image", { required: true })}
-            type="file"
-            className="max-w-full  bg-[#F3F3F3] md:w-[550px] h-14  file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#002172] file:text-white hover:file:bg-[#142a9b] file:h-14 file:w-fit cursor-pointer"
-          />
+          <div className="flex flex-col">
+            <h3 className="mt-8 mb-2 text-xl font-semibold">Image</h3>
+            <input
+              {...register("image", { required: true })}
+              type="file"
+              className="max-w-full  bg-[#F3F3F3] md:w-[550px] h-14  file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#002172] file:text-white hover:file:bg-[#142a9b] file:h-14 file:w-fit cursor-pointer"
+            />
+            {errors.image && (
+              <span className="text-xs text-red-600">
+                Image is required to register.
+              </span>
+            )}
+          </div>
 
-          {errors.image && (
-            <span className="text-xs text-red-600">
-              Image is required to register.
-            </span>
-          )}
-
-          <h3 className="mt-8 mb-2 text-xl font-semibold">Email Address</h3>
-          <input
-            {...register("email", { required: true })}
-            type="email"
-            name="email"
-            placeholder="Enter your email address"
-            className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5"
-          />
-          {errors.email && (
-            <span className="text-xs text-red-600">
-              Email is required to register.
-            </span>
-          )}
+          <div className="flex flex-col">
+            <h3 className="mt-8 mb-2 text-xl font-semibold">Email Address</h3>
+            <input
+              {...register("email", { required: true })}
+              type="email"
+              name="email"
+              placeholder="Enter your email address"
+              className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5"
+            />
+            {errors.email && (
+              <span className="text-xs text-red-600">
+                Email is required to register.
+              </span>
+            )}
+          </div>
 
           <h3 className="text-xl font-semibold my-3">Password</h3>
-          <div className="relative h-fit w-fit ">
+          <div className="relative flex flex-col mb-7">
             <input
               {...register("password", {
                 required: true,
@@ -125,7 +131,7 @@ const Register = () => {
               type={passwordVisible ? "text" : "password"}
               name="password"
               placeholder="Enter your password"
-              className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5 mb-7"
+              className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5"
             />
             <span
               className="cursor-pointer text-xl absolute top-4 right-3"
@@ -133,22 +139,22 @@ const Register = () => {
             >
               {passwordVisible ? <EyeIcon /> : <EyeClosedIcon />}
             </span>
+            {errors.password?.type === "minLength" && (
+              <span className="text-xs text-red-600">
+                Password length should be at least 6 characters.
+              </span>
+            )}
+            {errors.password?.type === "required" && (
+              <span className="text-xs text-red-600">
+                Password is required to register.
+              </span>
+            )}
+            {errors.password?.type === "pattern" && (
+              <span className="text-xs text-red-600">
+                Password should contain at least one capital letter.
+              </span>
+            )}{" "}
           </div>
-          {errors.password?.type === "minLength" && (
-            <span className="text-red-700">
-              Password length should be at least 6 characters.
-            </span>
-          )}
-          {errors.password?.type === "required" && (
-            <span className="text-red-700">
-              Password is required to register.
-            </span>
-          )}
-          {errors.password?.type === "pattern" && (
-            <span className="text-red-700">
-              Password should contain at least one capital letter.
-            </span>
-          )}
 
           <Button variant={"auth"}>Register</Button>
 
@@ -161,6 +167,7 @@ const Register = () => {
               Login
             </Link>
           </div>
+          <GoogleLogin />
         </form>
       </div>
     </div>

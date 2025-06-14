@@ -9,8 +9,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Button } from "@/components/ui/button";
 import { LoginFormInputs } from "@/types";
-
-
+import GoogleLogin from "@/components/shared/GoogleLogin";
 
 const Login = () => {
   const router = useRouter();
@@ -55,26 +54,28 @@ const Login = () => {
   return (
     <div className="max-w-screen-lg mx-auto my-10">
       <h3 className="text-3xl font-semibold text-center mb-5">Login</h3>
-      <div className="flex  items-center ">
+      <div className="flex items-center">
         <form
           className="max-w-screen-md mx-auto"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <h3 className="mt-8 mb-2 text-xl font-semibold">Email Address</h3>
-          <input
-            {...register("email", { required: true })}
-            type="text"
-            placeholder="Enter your email"
-            className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5"
-          />
-          {errors.email && (
-            <span className="text-xs text-red-600">
-              Email is required to login.
-            </span>
-          )}
+          <div className="flex flex-col">
+            <h3 className="mt-8 mb-2 text-xl font-semibold">Email Address</h3>
+            <input
+              {...register("email", { required: true })}
+              type="text"
+              placeholder="Enter your email"
+              className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5"
+            />
+            {errors.email && (
+              <span className="text-xs text-red-600">
+                Email is required to login.
+              </span>
+            )}
+          </div>
 
           <h3 className="text-xl font-semibold my-3">Password</h3>
-          <div className="relative h-fit w-fit ">
+          <div className="relative flex flex-col mb-7">
             <input
               {...register("password", {
                 required: true,
@@ -84,20 +85,20 @@ const Login = () => {
               type={passwordVisible ? "text" : "password"}
               name="password"
               placeholder="Enter your password"
-              className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5 mb-7"
+              className="max-w-full md:w-[550px] bg-[#F3F3F3] h-14 pl-5"
             />
             <span
-              className="cursor-pointer text-xl absolute top-4 right-3"
+              className="cursor-pointer text-xl absolute top-4 right-4"
               onClick={handleTogglePassword}
             >
               {passwordVisible ? <EyeIcon /> : <EyeClosedIcon />}
             </span>
-          </div>
+      
           {errors.password && (
             <span className="text-xs text-red-600">
               Password is required to login.
             </span>
-          )}
+          )}    </div>
 
           <Button variant={"auth"}>Login</Button>
 
@@ -110,7 +111,9 @@ const Login = () => {
               Register
             </Link>
           </div>
-        </form>
+
+          <GoogleLogin />
+        </form>{" "}
       </div>
     </div>
   );
