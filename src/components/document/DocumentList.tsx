@@ -10,6 +10,11 @@ import {
 import { Document, DocumentListProps } from "@/types";
 import { Share, Trash2, Users } from "lucide-react";
 
+type QuillDeltaOp = {
+  insert: string;
+  attributes?: Record<string, unknown>;
+};
+
 const DocumentList = ({
   documents,
   onDelete,
@@ -18,10 +23,21 @@ const DocumentList = ({
   isOwnerView = false,
   getUserName,
 }: DocumentListProps) => {
-  const stripHtml = (html: string) => {
-    const div = document.createElement("div");
-    div.innerHTML = html;
-    return div.textContent || div.innerText || "";
+  const getPreviewText = (content: string) => {
+    try {
+      const parsed = JSON.parse(content);
+      if (parsed.ops && Array.isArray(parsed.ops)) {
+        return (parsed.ops as QuillDeltaOp[])
+          .map((op) => op.insert)
+          .join("")
+          .trim();
+      }
+    } catch {
+      const div = document.createElement("div");
+      div.innerHTML = content;
+      return div.textContent || div.innerText || "";
+    }
+    return "";
   };
 
   return (
@@ -66,7 +82,7 @@ const DocumentList = ({
                 )}
               </div>
               <CardDescription className="line-clamp-2">
-                {doc.content ? stripHtml(doc.content) : "Empty document"}
+                {doc.content ? getPreviewText(doc.content) : "Empty document"}
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-0">

@@ -1,16 +1,12 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import { User } from "@/types";
-
-const TinyEditor = dynamic(() => import("@/components/Editor/TinyEditor"), {
-  ssr: false,
-});
 import DocNav from "@/components/shared/DocNav";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
+import QuillEditor from "@/components/Editor/QuillEditor";
 
 const DocumentEditor = () => {
   const { id } = useParams<{ id: string }>();
@@ -45,7 +41,8 @@ const DocumentEditor = () => {
     <>
       <DocNav docId={id} activeUsers={activeUsers} />
       <div className="p-6">
-        <TinyEditor docId={id} />
+        {/* <TinyEditor docId={id} /> */}
+        <QuillEditor docId={id} />
       </div>
     </>
   );
