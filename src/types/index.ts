@@ -46,3 +46,26 @@ export interface DocumentListProps {
   isOwnerView?: boolean;
   getUserName?: (userId: string) => string;
 }
+
+export interface QuillEditorProps {
+  docId: string;
+  onActiveUsers?: (users: User[]) => void;
+}
+
+export interface QuillRange {
+  index: number;
+  length: number;
+}
+
+export interface CursorsModule {
+  createCursor(id: string, name: string, color: string): void;
+  moveCursor(id: string, range: QuillRange): void;
+  cursors(): Record<
+    string,
+    {
+      name: string;
+      color: string;
+      range: QuillRange;
+    }
+  >;
+}

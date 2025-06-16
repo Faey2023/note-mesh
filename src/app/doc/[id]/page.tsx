@@ -40,10 +40,7 @@ const DocumentEditor = () => {
   return (
     <>
       <DocNav docId={id} activeUsers={activeUsers} />
-      <div className="p-6">
-        {/* <TinyEditor docId={id} /> */}
-        <QuillEditor docId={id} />
-      </div>
+      <QuillEditor docId={id} onActiveUsers={setActiveUsers} />
     </>
   );
 };
